@@ -6,11 +6,11 @@ var express = require('express'),
 	app     = express();
 
 var dgram   = require('dgram'),
-	message = new Buffer("money"),
 	client  = dgram.createSocket("udp4");
 
 app.get('/purchase.js', function(req, res) {
-	client.send(message, 0, message.length, config.port, config.address);
+	var message = new Buffer(req.ip);
+	client.send(message, 0, message.length, config.port, config.clientAddress);
 	res.set({
 		'Content-Type': 'text/javascript',
 		'Content-Length': 0
@@ -18,6 +18,5 @@ app.get('/purchase.js', function(req, res) {
 	res.send(200);
 });
 
-var port = config.env === 'dev' ? 3000 : 80;
-http.createServer(app).listen(port);
-console.log('Listening on port ' + port);
+app.listen(3000)
+console.log('Listening on port 3000');
